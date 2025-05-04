@@ -99,16 +99,16 @@ public class TradeControllerTest {
                 .andExpect(jsonPath("$[0].tradeId").value("T1"))
                 .andExpect(jsonPath("$[1].tradeId").value("T2"));
     }
-/*
+
     // Test for getting trade by id
     @Test
     void testGetTradeById() throws Exception {
         Trade trade = new Trade();
         trade.setTradeId("T1");
-        trade.setBookId(1);
-        trade.setCounterpartyId(1);
-        trade.setCreatedDate("2025-05-04");
-        trade.setMaturityDate("2025-05-05");
+        trade.setBookId("1");
+        trade.setCounterpartyId("1");
+        trade.setCreatedDate("04/05/2025");
+        trade.setMaturityDate("05/05/2025");
         trade.setIsExpired("N");
 
         // Mock the findById method of TradeRepository
@@ -125,18 +125,18 @@ public class TradeControllerTest {
     void testUpdateTrade() throws Exception {
         Trade existingTrade = new Trade();
         existingTrade.setTradeId("T1");
-        existingTrade.setBookId(1);
-        existingTrade.setCounterpartyId(1);
-        existingTrade.setCreatedDate("2025-05-04");
-        existingTrade.setMaturityDate("2025-05-05");
+        existingTrade.setBookId("1");
+        existingTrade.setCounterpartyId("1");
+        existingTrade.setCreatedDate("04/05/2025");
+        existingTrade.setMaturityDate("05/05/2025");
         existingTrade.setIsExpired("N");
 
         Trade tradeDetails = new Trade();
         tradeDetails.setTradeId("T2");
-        tradeDetails.setBookId(2);
-        tradeDetails.setCounterpartyId(2);
-        tradeDetails.setCreatedDate("2025-05-04");
-        tradeDetails.setMaturityDate("2025-05-05");
+        tradeDetails.setBookId("2");
+        tradeDetails.setCounterpartyId("2");
+        tradeDetails.setCreatedDate("04/05/2025");
+        tradeDetails.setMaturityDate("05/05/2025");
         tradeDetails.setIsExpired("N");
 
         // Mock the findById and createTrades methods
@@ -146,7 +146,7 @@ public class TradeControllerTest {
         // Mock the request and verify the response
         mockMvc.perform(put("/api/v1/trade/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"tradeId\":\"T2\", \"bookId\":2, \"counterpartyId\":2, \"createdDate\":\"2025-05-04\", \"maturityDate\":\"2025-05-05\", \"isExpired\":\"N\"}"))
+                        .content("{\"tradeId\":\"T2\", \"bookId\":\"1\", \"counterpartyId\":\"1\", \"createdDate\":\"04/05/2025\", \"maturityDate\":\"04/05/2025\", \"isExpired\":\"N\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tradeId").value("T2"));
     }
@@ -156,10 +156,10 @@ public class TradeControllerTest {
     void testDeleteTrade() throws Exception {
         Trade trade = new Trade();
         trade.setTradeId("T1");
-        trade.setBookId(1);
-        trade.setCounterpartyId(1);
-        trade.setCreatedDate("2025-05-04");
-        trade.setMaturityDate("2025-05-05");
+        trade.setBookId("1");
+        trade.setCounterpartyId("1");
+        trade.setCreatedDate("04/05/2025");
+        trade.setMaturityDate("05/05/2025");
         trade.setIsExpired("N");
 
         // Mock the findById and delete methods
@@ -181,5 +181,5 @@ public class TradeControllerTest {
         mockMvc.perform(get("/api/v1/trade/{id}", 999L))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Trade not exist with id:999"));
-    }*/
+    }
 }
