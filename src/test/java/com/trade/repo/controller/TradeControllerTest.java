@@ -171,7 +171,7 @@ public class TradeControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    // Test for ResourceNotFoundException in getTradeById
+    // Test for ResourceNotFoundException in getTradeById update for test
     @Test
     void testGetTradeByIdNotFound() throws Exception {
         // Mock the findById method to return empty
