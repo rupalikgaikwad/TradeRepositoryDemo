@@ -1,25 +1,15 @@
 package com.trade.repo.repository;
 
 import com.trade.repo.model.Trade;
+import com.trade.repo.model.TradeValidator;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 
 public interface TradeRepository  extends JpaRepository<Trade, Long> {
 }
 
-/*@NoArgsConstructor
-@AllArgsConstructor
 
-public class TradeRepository {
-    public Trade save(Trade tradeDetails){
-        System.out.println("Trade object save successful");
-        return tradeDetails;
-    }
-
-    public Trade findById(long id){
-        System.out.println("Trade object save successful");
-        return new Trade();
-    }
-}*/

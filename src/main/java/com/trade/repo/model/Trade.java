@@ -3,6 +3,7 @@ package com.trade.repo.model;
 import lombok.*;
 
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,22 +38,13 @@ public class Trade {
     private String maturityDate;
 
     @Column(name = "created_date")
-    @Setter(AccessLevel.NONE)
     private String createdDate;
 
     @Column(name = "is_expired")
     private String isExpired;
 
-    public void setCreatedDate(String date) {
-        // Formatting a date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        try {
-            LocalDate parsedDate = LocalDate.parse(date, formatter);
-            System.out.println("Parsed Date: " + parsedDate);
-            createdDate = date;
-        } catch (DateTimeParseException e) {
-            System.out.println("Error parsing date: " + e.getMessage());
-        }
-        //return this.createdDate;
-    }
+    @Column(name = "status")
+    private String status;
 }
+
+
