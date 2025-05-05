@@ -1,0 +1,76 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Change to Windows
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'adoptopenjdk'
+
+      # Step 3: Install Apache Maven 3.9.9
+      - name: Install Apache Maven 3.9.9
+        run: |
+          Invoke-WebRequest -Uri https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -OutFile maven.zip
+          Expand-Archive maven.zip -DestinationPath $Env:ProgramFiles
+          $env:MAVEN_HOME="$Env:ProgramFiles\apache-maven-3.9.9"
+          $env:PATH="$env:MAVEN_HOME\bin;$env:PATH"
+
+      # Step 4: Cache Maven dependencies to speed up builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: C:\Users\runneradmin\.m2\repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 5: Build with Maven (this includes running JUnit tests)
+      - name: Build with Maven
+        run: mvn clean install -DskipTests=false
+
+      # Step 6: Run JUnit Tests and Generate Test Reports
+      - name: Run tests with Maven
+        run: mvn test
+
+      # Step 7: Upload Test Results (JUnit XML reports) to GitHub
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: target/test-classes/testng-*.xml
+
+      # Step 8: Run Dependency Scanning for vulnerabilities using OWASP Dependency-Check
+      - name: Run OWASP Dependency-Check
+        run: mvn org.owasp:dependency-check-maven:check
+
+      # Step 9: Upload Dependency Check Report as an Artifact
+      - name: Upload Dependency Check Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-check-report
+          path: target/dependency-check-report.html
+
+      # Step 10: Snyk Vulnerability Scanning (Optional)
+      - name: Install and Run Snyk for Dependency Scanning
+        uses: snyk/actions/maven@v2
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
