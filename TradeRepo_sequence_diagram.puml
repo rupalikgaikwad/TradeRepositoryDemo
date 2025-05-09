@@ -1,0 +1,33 @@
+@startuml
+!theme bluegray
+skinparam ArrowThickness 0.75
+title Trade Repositry Service
+
+' Specify the participants left to right:
+participant "Trade data prducer" as producer
+box "Transaction Store Service" #Lightyellow
+  participant "controller class" as controller
+  participant "TradeService class" as TradeService
+  participant "TradeValidator class" as TradeValidator
+  participant "TradeRepo class" as TradeRepo
+  database "SQL database" as SQLDB
+end box
+box "Operational Store" #Lightyellow
+  participant "Trade OPS Store" as OPSStore
+end box
+
+' Specify the events (in order):
+
+producer -> controller : list of trades
+controller -> TradeService: list of trades
+loop for each item
+  TradeService -> TradeValidator: trade details
+  TradeValidator -> TradeService: success/failure
+  TradeService -> TradeRepo: save trade
+  TradeRepo -> SQLDB: trade details
+  TradeRepo -> TradeService:success/failure
+  TradeService -> OPSStore: Async push Trade details
+end
+TradeService -> controller: Collective succes/failure
+controller -> producer: collective success/failre
+@enduml
