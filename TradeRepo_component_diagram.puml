@@ -2,20 +2,18 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' uncomment the following line and comment the first to use locally
 ' !include C4_Container.puml
-
+left to right direction
 
 title Container diagram for Trade Repository System
-left to right direction
 Person(customer, "Trade Event Producer", "Web App/mobile App/Event Backbone")
 System_Boundary(c1, "Trade Repository Service") {
-  left to right direction
   System_Boundary(c2, "Trade Transaction Service") {
-    top to bottom direction
     Container(writer1, "transaction storage service", "Java, Spring boot", "Trade write request handler")
     ContainerDb(sqlDB, "Transactional Database", "SQL database", "Write efficient Storage")
   }
   Container(eve,"Event Backbone","Async event queue")
   Container(etl,"Data transformation layer","Conversion in read efficient format")
+
   System_Boundary(c3, "Trade OPS Service") {
     Container(writer2, "NoSQL Access Layer", "Java, Spring boot", "Provide database read/write handler")
     ContainerDb(NoSQLDB, "Operational Database", "NoSQL Database", "Read efficent storage system")
@@ -23,8 +21,8 @@ System_Boundary(c1, "Trade Repository Service") {
 }
 System_Ext(consumer, "Trade consumer Applications","event backbone/API/files/batches", "APIs, reporting, analytics systems")
 
-Rel(customer, c2, "Trade List", "HTTPS")
-Rel(c2, eve, "trade", "HTTPS")
+Rel(customer, c2, "Trade List")
+Rel(c2, eve, "trade")
 Rel(eve, etl, "trade")
 Rel(etl, writer2, "trade")
 Rel(c3, consumer, "trade")
